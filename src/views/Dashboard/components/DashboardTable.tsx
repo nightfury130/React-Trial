@@ -1,5 +1,12 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import clsx from "clsx";
+
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  withStyles,
+} from "@material-ui/core/styles";
 import {
   Table,
   TableBody,
@@ -10,6 +17,9 @@ import {
   TableSortLabel,
   Paper,
 } from "@material-ui/core";
+
+import TokenIcon from "../../../assets/image/logo.png";
+import Polygonscan from "../../../assets/image/polygonscan.png";
 
 interface Data {
   asset: string;
@@ -28,18 +38,14 @@ function createData(
 }
 
 const rows = [
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
-  createData("TEST TOKEN", 2324, 74.03, 1641655681),
+  createData("TEST TOKEN", 2324, 74.03, 1641655581),
+  createData("TEST TOKEN", 2123, 74.03, 1641655481),
+  createData("TEST TOKEN", 123, 74.03, 1641655381),
+  createData("TEST TOKEN", 234, 74.03, 1641655323),
+  createData("TEST TOKEN", 1276, 74.03, 1641655342),
+  createData("TEST TOKEN", 1254, 74.03, 1641655345),
+  createData("TEST TOKEN", 2363, 74.03, 1641655456),
+  createData("TEST TOKEN", 5672, 74.03, 1641655567),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -113,27 +119,47 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.id === "asset" ? "left" : "center"}
-            padding="normal"
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id && (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              )}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+        {headCells.map((headCell) => {
+          if (headCell.id === "time") {
+            return (
+              <StyledTableCell
+                key={headCell.id}
+                align="center"
+                padding="normal"
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id && (
+                    <span className={classes.visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </span>
+                  )}
+                </TableSortLabel>
+              </StyledTableCell>
+            );
+          } else {
+            return (
+              <StyledTableCell
+                key={headCell.id}
+                align={headCell.id === "asset" ? "left" : "center"}
+                style={{ paddingLeft: `${headCell.id === "asset" && "24px"}` }}
+                padding="normal"
+              >
+                {headCell.label}
+              </StyledTableCell>
+            );
+          }
+        })}
+        <StyledTableCell align="center" padding="normal">
+          Polygonscan
+        </StyledTableCell>
       </TableRow>
     </TableHead>
   );
@@ -167,8 +193,20 @@ const useStyles = makeStyles((theme: Theme) =>
     colored: {
       backgroundColor: "#fbfbf9",
     },
+    tableCell: {
+      display: "flex",
+      alignItems: "center",
+    },
   })
 );
+
+export const StyledTableCell = withStyles((theme) => ({
+  root: {
+    fontSize: "14px",
+    fontWeight: 600,
+    color: "#2D3047",
+  },
+}))(TableCell);
 
 export default function EnhancedTable() {
   const classes = useStyles();
@@ -203,15 +241,36 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy)).map(
                 (row, index) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                      <TableCell>{row.asset}</TableCell>
-                      <TableCell align="center" className={classes.colored}>
+                    <TableRow role="checkbox" tabIndex={-1} key={index}>
+                      <StyledTableCell
+                        className={classes.tableCell}
+                        style={{ paddingLeft: "24px" }}
+                      >
+                        <img
+                          src={TokenIcon}
+                          alt="icon"
+                          style={{ marginRight: "12px" }}
+                        />
+                        {row.asset}
+                      </StyledTableCell>
+                      <StyledTableCell
+                        align="center"
+                        className={clsx(classes.colored)}
+                      >
                         {row.amount}
-                      </TableCell>
-                      <TableCell align="center">{row.totalValue}</TableCell>
-                      <TableCell align="center" className={classes.colored}>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        ${row.totalValue}
+                      </StyledTableCell>
+                      <StyledTableCell
+                        align="center"
+                        className={clsx(classes.colored)}
+                      >
                         {row.time}
-                      </TableCell>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <img src={Polygonscan} alt="icon" />
+                      </StyledTableCell>
                     </TableRow>
                   );
                 }
