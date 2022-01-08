@@ -1,56 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React from "react";
+
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { Toolbar, Fab, Container, Box } from "@material-ui/core";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+
+import Header from "./components/Header";
+import Dashboard from "./views/Dashboard";
+import ScrollTop from "./components/ScrollTop";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      maxWidth: "1148px",
+    },
+  })
+);
 
 function App() {
+  const classes = useStyles();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div>
+      <Header />
+      <Toolbar id="back-to-top-anchor" />
+      <Container classes={{ maxWidthLg: classes.container }}>
+        <Box my={8}>
+          <Dashboard />
+        </Box>
+      </Container>
+      <ScrollTop>
+        <Fab color="secondary" size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
     </div>
   );
 }
