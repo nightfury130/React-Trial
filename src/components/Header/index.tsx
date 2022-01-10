@@ -7,6 +7,8 @@ import CommonButton from "../CommonButton";
 
 import Logo from "../../assets/image/logo.png";
 
+import ConnectButton from "./ConnectButton";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
@@ -24,7 +26,7 @@ export default function Header() {
     <AppBar className={classes.appBar}>
       <Toolbar style={{ justifyContent: "space-between" }}>
         <img src={Logo} alt="logo" />
-        <CommonButton name="Connect Wallet" />
+        <ConnectButton />
       </Toolbar>
     </AppBar>
   );

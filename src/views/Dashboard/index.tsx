@@ -10,10 +10,14 @@ import TxProgressModal from "./components/TxProgressModal";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      "& button": {
+        fontFamily: "Montserrat",
+      },
       "& p": {
         color: "#2D3047",
         textTransform: "uppercase",
         fontWeight: 800,
+        fontFamily: "Montserrat",
       },
     },
     pageTitle: {

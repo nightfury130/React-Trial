@@ -10,6 +10,18 @@ import ScrollTop from "./components/ScrollTop";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      "& button": {
+        fontFamily: "Montserrat",
+        fontWeight: 600,
+      },
+      "& p": {
+        fontFamily: "Montserrat",
+      },
+      "& table *": {
+        fontFamily: "Montserrat",
+      },
+    },
     container: {
       maxWidth: "1148px",
     },
@@ -20,7 +32,7 @@ function App() {
   const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.root}>
       <Header />
       <Toolbar id="back-to-top-anchor" />
       <Container classes={{ maxWidthLg: classes.container }}>

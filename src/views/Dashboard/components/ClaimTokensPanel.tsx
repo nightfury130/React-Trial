@@ -68,7 +68,7 @@ export default function ClaimTokensPanel() {
         <Grid item xs={6}>
           <Typography className={classes.subParagraphy}>Contract</Typography>
           <span className={classes.address}>
-            0xa6f79B60359f141df90A0C745125B131cAAfFD12
+            0x979DE62043d23f966f5083cAeb7bbca22c4bBe89
           </span>
         </Grid>
         <Grid item xs={2}>
