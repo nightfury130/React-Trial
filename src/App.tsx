@@ -8,6 +8,8 @@ import Header from "./components/Header";
 import Dashboard from "./views/Dashboard";
 import ScrollTop from "./components/ScrollTop";
 
+// import { web3 } from "./config/constant";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {

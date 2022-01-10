@@ -5,6 +5,10 @@ import { Box, Button, Grid, Typography } from "@material-ui/core";
 
 import Logo from "../../../assets/image/logo_red.png";
 
+import TxProgressModal from "./TxProgressModal";
+
+import { contractAddress } from "../../../config/constant";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -59,6 +63,12 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ClaimTokensPanel() {
   const classes = useStyles();
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box className={classes.root}>
       <Grid container alignItems="center">
@@ -67,9 +77,7 @@ export default function ClaimTokensPanel() {
         </Grid>
         <Grid item xs={6}>
           <Typography className={classes.subParagraphy}>Contract</Typography>
-          <span className={classes.address}>
-            0x979DE62043d23f966f5083cAeb7bbca22c4bBe89
-          </span>
+          <span className={classes.address}>{contractAddress}</span>
         </Grid>
         <Grid item xs={2}>
           <span className={classes.claimable}>Claimable</span>
@@ -78,9 +86,17 @@ export default function ClaimTokensPanel() {
           </Typography>
         </Grid>
         <Grid item xs={3} style={{ textAlign: "right" }}>
-          <Button className={classes.claimTokensBtn}>Claim Tokens</Button>
+          <Button
+            className={classes.claimTokensBtn}
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            Claim Tokens
+          </Button>
         </Grid>
       </Grid>
+      <TxProgressModal open={open} onClose={handleClose} />
     </Box>
   );
 }
