@@ -5,6 +5,7 @@ import { Box, Divider, Typography } from "@material-ui/core";
 
 import ClaimTokensPanel from "./components/ClaimTokensPanel";
 import DashboardTable from "./components/DashboardTable";
+import TxProgressModal from "./components/TxProgressModal";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,6 +40,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Dashboard() {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Box className={classes.root}>
@@ -71,6 +77,8 @@ export default function Dashboard() {
       </Box>
 
       <DashboardTable />
+
+      <TxProgressModal open={open} onClose={handleClose} />
     </Box>
   );
 }
