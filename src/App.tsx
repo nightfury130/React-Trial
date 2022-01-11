@@ -8,7 +8,9 @@ import Header from "./components/Header";
 import Dashboard from "./views/Dashboard";
 import ScrollTop from "./components/ScrollTop";
 
-// import { web3 } from "./config/constant";
+import Web3 from "web3";
+
+// const web3 = new Web3();
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

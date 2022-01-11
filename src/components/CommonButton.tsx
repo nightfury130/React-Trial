@@ -21,10 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface CommonButtonProps {
   name: string;
+  onClick: Function;
 }
 
-export default function CommonButton({ name }: CommonButtonProps) {
+export default function CommonButton({ name, onClick }: CommonButtonProps) {
   const classes = useStyles();
 
-  return <Button className={classes.connectButton}>{name}</Button>;
+  return (
+    <Button className={classes.connectButton} onClick={() => onClick()}>
+      {name}
+    </Button>
+  );
 }

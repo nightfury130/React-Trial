@@ -1,8 +1,15 @@
+import { useState, useEffect } from "React";
 import { Dialog, IconButton, Typography, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 
 import CommonButton from "../../../components/CommonButton";
+
+import {
+  contractAddress,
+  contract,
+  NETWORK_NAME,
+} from "../../../config/constant";
 
 const useStyles = makeStyles({
   dialogPaper: {
@@ -51,6 +58,19 @@ export default function TxProgressModal(props: SimpleDialogProps) {
   const classes = useStyles();
   const { onClose, open } = props;
 
+  const [loading, setLoading] = useState(true);
+  const [txhash, setTxhash] = useState("");
+
+  useEffect(() => {
+    contract.methods.ASelfClaimToMyWallet().call((err: any, result: any) => {
+      setTxhash(result.logs[0]);
+    });
+  }, [txhash]);
+
+  const onNavigateScan = () => {
+    window.open("https://mumbai.polygonscan.com/tx/" + txhash, "_blank");
+  };
+
   return (
     <Dialog
       classes={{ paper: classes.dialogPaper, root: classes.dialog }}
@@ -61,30 +81,42 @@ export default function TxProgressModal(props: SimpleDialogProps) {
       <IconButton className={classes.closeIcon} onClick={onClose}>
         <CloseIcon />
       </IconButton>
-      <Box style={{ padding: "16px", textAlign: "center" }}>
-        <Typography className={classes.title}>
-          Transaction in
-          <br />
-          progress
-        </Typography>
-        <Typography
-          className={classes.content}
-          style={{ marginBottom: "20px" }}
-        >
-          Transaction is proceeding on [Network name].
-          <br />
-          This can take a moment, please be patient...
-        </Typography>
-        <Typography
-          className={classes.content}
-          style={{ lineHeight: "23px", marginBottom: "60px" }}
-        >
-          Hash:{" "}
-          <span className={classes.address}>0xf273a38fec99acf1e....eba</span>
-        </Typography>
+      {loading ? (
+        <Box style={{ padding: "16px", textAlign: "center" }}>
+          <Typography className={classes.title}>
+            Transaction in
+            <br />
+            progress
+          </Typography>
+          <Typography
+            className={classes.content}
+            style={{ marginBottom: "20px" }}
+          >
+            Transaction is proceeding on [{NETWORK_NAME}].
+            <br />
+            This can take a moment, please be patient...
+          </Typography>
+        </Box>
+      ) : (
+        <Box style={{ padding: "16px", textAlign: "center" }}>
+          <Typography className={classes.title}>
+            Transaction finished
+            <br />
+            successfully
+          </Typography>
+          <Typography
+            className={classes.content}
+            style={{ lineHeight: "23px", marginBottom: "60px" }}
+          >
+            Hash: <span className={classes.address}>{txhash}</span>
+          </Typography>
 
-        <CommonButton name="Check on polygonscan" />
-      </Box>
+          <CommonButton
+            name="Check on polygonscan"
+            onClick={() => onNavigateScan()}
+          />
+        </Box>
+      )}
     </Dialog>
   );
 }

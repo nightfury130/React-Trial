@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { Box, Button, Grid, Typography } from "@material-ui/core";
@@ -7,7 +7,7 @@ import Logo from "../../../assets/image/logo_red.png";
 
 import TxProgressModal from "./TxProgressModal";
 
-import { contractAddress } from "../../../config/constant";
+import { contractAddress, contract } from "../../../config/constant";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,6 +65,15 @@ export default function ClaimTokensPanel() {
 
   const [open, setOpen] = React.useState(false);
 
+  const [claimable, setClaimable] = React.useState(0);
+
+  useEffect(() => {
+    let _claimable;
+    contract.methods.getReleasableAmount().call((err: any, result: any) => {
+      setClaimable(result);
+    });
+  }, [claimable]);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -82,7 +91,7 @@ export default function ClaimTokensPanel() {
         <Grid item xs={2}>
           <span className={classes.claimable}>Claimable</span>
           <Typography className={classes.claimableValue}>
-            5356 <span>Test</span>
+            {claimable} <span>Test</span>
           </Typography>
         </Grid>
         <Grid item xs={3} style={{ textAlign: "right" }}>
